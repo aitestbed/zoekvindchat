@@ -27,7 +27,7 @@
   const corsProxy = "https://cors-anywhere.herokuapp.com/";
   const url = `${corsProxy}https://zoeken.oba.nl/api/v1/search/?q=${encodeURIComponent(
     query
-  )}&authorization=${apiKey}&detail=short&output=json`;
+  )}&authorization=${apiKey}&output=json`;
 
   const response = await fetch(url);
   const data = await response.json();
