@@ -17,7 +17,7 @@
     <button onclick="search()">Zoeken</button>
     <div id="results"></div>
     <script>
-      async function search() {
+     async function search() {
   const searchInput = document.getElementById("searchInput");
   const query = searchInput.value;
   const resultsContainer = document.getElementById("results");
@@ -27,34 +27,44 @@
   const corsProxy = "https://cors-anywhere.herokuapp.com/";
   const url = `${corsProxy}https://zoeken.oba.nl/api/v1/search/?q=${encodeURIComponent(
     query
-  )}&authorization=${apiKey}&output=json`;
+  )}&authorization=${apiKey}&detail=short&output=json`;
 
-  const response = await fetch(url);
-  const data = await response.json();
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+    console.log("API response data: ", data);
 
-  if (
-    data.aquabrowser &&
-    data.aquabrowser.results &&
-    data.aquabrowser.results.result
-  ) {
-    const results = Array.isArray(data.aquabrowser.results.result)
-      ? data.aquabrowser.results.result
-      : [data.aquabrowser.results.result];
-    results.forEach((result) => {
-      const title = result.titles["short-title"]["_text"];
-      const ppn = result.identifiers["ppn-id"]["_text"];
-      const isbn = result.identifiers["isbn-id"]["_text"];
+    if (
+      data.aquabrowser &&
+      data.aquabrowser.results &&
+      data.aquabrowser.results.result
+    ) {
+      const results = Array.isArray(data.aquabrowser.results.result)
+        ? data.aquabrowser.results.result
+        : [data.aquabrowser.results.result];
+      console.log("Results array: ", results);
 
-      const coverUrl = `https://cover.biblion.nl/coverlist.dll/?doctype=morebutton&bibliotheek=oba&style=0&ppn=${ppn}&isbn=${isbn}&lid=&aut=&ti=&size=120`;
+      results.forEach((result) => {
+        const title = result.titles["short-title"]["_text"];
+        const ppn = result.identifiers["ppn-id"]["_text"];
+        const isbn = result.identifiers["isbn-id"]
+          ? result.identifiers["isbn-id"]["_text"]
+          : "";
 
-      const resultDiv = document.createElement("div");
-      resultDiv.classList.add("result");
-      resultDiv.innerHTML = `<h3>${title}</h3><img src="${coverUrl}" alt="${title}">`;
+        const coverUrl = `https://cover.biblion.nl/coverlist.dll/?doctype=morebutton&bibliotheek=oba&style=0&ppn=${ppn}&isbn=${isbn}&lid=&aut=&ti=&size=120`;
 
-      resultsContainer.appendChild(resultDiv);
-    });
-  } else {
-    resultsContainer.innerHTML = "<p>Geen resultaten gevonden.</p>";
+        const resultDiv = document.createElement("div");
+        resultDiv.classList.add("result");
+        resultDiv.innerHTML = `<h3>${title}</h3><img src="${coverUrl}" alt="${title}">`;
+
+        resultsContainer.appendChild(resultDiv);
+      });
+    } else {
+      resultsContainer.innerHTML = "<p>Geen resultaten gevonden.</p>";
+    }
+  } catch (error) {
+    console.error("Error during API fetch: ", error);
+    resultsContainer.innerHTML = "<p>Er is een fout opgetreden bij het ophalen van de resultaten.</p>";
   }
 }
 
