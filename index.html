@@ -17,37 +17,45 @@
     <button onclick="search()">Zoeken</button>
     <div id="results"></div>
     <script>
-       async function search() {
-    const searchInput = document.getElementById('searchInput');
-    const query = searchInput.value;
-    const resultsContainer = document.getElementById('results');
-    resultsContainer.innerHTML = '';
+      async function search() {
+  const searchInput = document.getElementById("searchInput");
+  const query = searchInput.value;
+  const resultsContainer = document.getElementById("results");
+  resultsContainer.innerHTML = "";
 
-    const apiKey = 'YOUR_OBA_API_KEY';
-    const corsProxy = 'https://cors-anywhere.herokuapp.com/';
-    const url = `${corsProxy}https://zoeken.oba.nl/api/v1/search/?q=${encodeURIComponent(query)}&authorization=${apiKey}&detail=short&output=json`;
+  const apiKey = "YOUR_OBA_API_KEY";
+  const corsProxy = "https://cors-anywhere.herokuapp.com/";
+  const url = `${corsProxy}https://zoeken.oba.nl/api/v1/search/?q=${encodeURIComponent(
+    query
+  )}&authorization=${apiKey}&detail=short&output=json`;
 
-    const response = await fetch(url);
-    const data = await response.json();
+  const response = await fetch(url);
+  const data = await response.json();
 
-    if (data.aquabrowser && data.aquabrowser.results && data.aquabrowser.results.result) {
-        const results = Array.isArray(data.aquabrowser.results.result) ? data.aquabrowser.results.result : [data.aquabrowser.results.result];
-        results.forEach(result => {
-            const title = result.titles['short-title']._text;
-            const ppn = result.identifiers['ppn-id']._text;
-            const isbn = result.identifiers['isbn-id']._text;
+  if (
+    data.aquabrowser &&
+    data.aquabrowser.results &&
+    data.aquabrowser.results.result
+  ) {
+    const results = Array.isArray(data.aquabrowser.results.result)
+      ? data.aquabrowser.results.result
+      : [data.aquabrowser.results.result];
+    results.forEach((result) => {
+      const title = result.titles["short-title"]["_text"];
+      const ppn = result.identifiers["ppn-id"]["_text"];
+      const isbn = result.identifiers["isbn-id"]["_text"];
 
-            const coverUrl = `https://cover.biblion.nl/coverlist.dll/?doctype=morebutton&bibliotheek=oba&style=0&ppn=${ppn}&isbn=${isbn}&lid=&aut=&ti=&size=120`;
+      const coverUrl = `https://cover.biblion.nl/coverlist.dll/?doctype=morebutton&bibliotheek=oba&style=0&ppn=${ppn}&isbn=${isbn}&lid=&aut=&ti=&size=120`;
 
-            const resultDiv = document.createElement('div');
-            resultDiv.classList.add('result');
-            resultDiv.innerHTML = `<h3>${title}</h3><img src="${coverUrl}" alt="${title}">`;
+      const resultDiv = document.createElement("div");
+      resultDiv.classList.add("result");
+      resultDiv.innerHTML = `<h3>${title}</h3><img src="${coverUrl}" alt="${title}">`;
 
-            resultsContainer.appendChild(resultDiv);
-        });
-    } else {
-        resultsContainer.innerHTML = '<p>Geen resultaten gevonden.</p>';
-    }
+      resultsContainer.appendChild(resultDiv);
+    });
+  } else {
+    resultsContainer.innerHTML = "<p>Geen resultaten gevonden.</p>";
+  }
 }
 
     </script>
