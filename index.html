@@ -17,20 +17,22 @@
     <button onclick="search()">Zoeken</button>
     <div id="results"></div>
     <script>
-        async function search() {
+       async function search() {
     const searchInput = document.getElementById('searchInput');
     const query = searchInput.value;
     const resultsContainer = document.getElementById('results');
     resultsContainer.innerHTML = '';
 
-    const apiKey = '76f45dfa187d66be5fd6af05573eab04';
-    const url = `https://zoeken.oba.nl/api/v1/search/?q=${encodeURIComponent(query)}&authorization=${apiKey}&detail=short&output=json`;
+    const apiKey = 'YOUR_OBA_API_KEY';
+    const corsProxy = 'https://cors-anywhere.herokuapp.com/';
+    const url = `${corsProxy}https://zoeken.oba.nl/api/v1/search/?q=${encodeURIComponent(query)}&authorization=${apiKey}&detail=short&output=json`;
 
     const response = await fetch(url);
     const data = await response.json();
 
-    if (data.results) {
-        data.results.forEach(result => {
+    if (data.aquabrowser && data.aquabrowser.results && data.aquabrowser.results.result) {
+        const results = Array.isArray(data.aquabrowser.results.result) ? data.aquabrowser.results.result : [data.aquabrowser.results.result];
+        results.forEach(result => {
             const title = result.titles['short-title']._text;
             const ppn = result.identifiers['ppn-id']._text;
             const isbn = result.identifiers['isbn-id']._text;
