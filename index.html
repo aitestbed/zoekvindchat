@@ -4,49 +4,48 @@
     <title>Hello World</title>
     <style>
         #results {
-            margin-top: 1rem;
+            margin-top: 20px;
+        }
+        .result {
+            margin-bottom: 20px;
         }
     </style>
 </head>
 <body>
     <h1>Hello World</h1>
-    <form id="search-form">
-        <input type="text" id="search-query" placeholder="Zoek in OBA-collectie">
-        <button type="submit">Zoeken</button>
-    </form>
+    <input type="text" id="searchInput" placeholder="Zoek in de OBA collectie">
+    <button onclick="search()">Zoeken</button>
     <div id="results"></div>
-
     <script>
-       const API_KEY = '76f45dfa187d66be5fd6af05573eab04';
-const API_URL = 'https://zoeken.oba.nl/api/v1/search/?q=';
-
-const searchForm = document.getElementById('search-form');
-const searchQueryInput = document.getElementById('search-query');
-const resultsContainer = document.getElementById('results');
-
-searchForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const searchQuery = searchQueryInput.value;
-    const searchUrl = `${API_URL}${searchQuery}&authorization=${API_KEY}&pagesize=10&refine=true`;
-
-    try {
-        const response = await fetch(searchUrl);
-        const data = await response.json();
-        displayResults(data);
-    } catch (error) {
-        console.error('Error:', error);
-    }
-});
-
-function displayResults(data) {
+        async function search() {
+    const searchInput = document.getElementById('searchInput');
+    const query = searchInput.value;
+    const resultsContainer = document.getElementById('results');
     resultsContainer.innerHTML = '';
-    data.results.forEach(item => {
-        const result = document.createElement('div');
-        const title = document.createElement('h3');
-        title.textContent = item.title;
-        result.appendChild(title);
-        resultsContainer.appendChild(result);
-    });
+
+    const apiKey = '76f45dfa187d66be5fd6af05573eab04';
+    const url = `https://zoeken.oba.nl/api/v1/search/?q=${encodeURIComponent(query)}&authorization=${apiKey}&detail=short&output=json`;
+
+    const response = await fetch(url);
+    const data = await response.json();
+
+    if (data.results) {
+        data.results.forEach(result => {
+            const title = result.titles['short-title']._text;
+            const ppn = result.identifiers['ppn-id']._text;
+            const isbn = result.identifiers['isbn-id']._text;
+
+            const coverUrl = `https://cover.biblion.nl/coverlist.dll/?doctype=morebutton&bibliotheek=oba&style=0&ppn=${ppn}&isbn=${isbn}&lid=&aut=&ti=&size=120`;
+
+            const resultDiv = document.createElement('div');
+            resultDiv.classList.add('result');
+            resultDiv.innerHTML = `<h3>${title}</h3><img src="${coverUrl}" alt="${title}">`;
+
+            resultsContainer.appendChild(resultDiv);
+        });
+    } else {
+        resultsContainer.innerHTML = '<p>Geen resultaten gevonden.</p>';
+    }
 }
 
     </script>
