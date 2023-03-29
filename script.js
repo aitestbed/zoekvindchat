@@ -10,8 +10,8 @@ async function getPlaatjes() {
 
         results.forEach(result => {
             const plaatje = document.createElement("img");
-            plaatje.src = result.coverimages[0].coverimage;
-            plaatje.alt = result.titles[0].title;
+            plaatje.src = result.coverimages[0];
+            plaatje.alt = result.titles[0];
             plaatje.style.margin = "10px";
             plaatjesContainer.appendChild(plaatje);
         });
