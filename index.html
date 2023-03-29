@@ -1,73 +1,13 @@
 <!DOCTYPE html>
-<html>
+<html lang="nl">
 <head>
-    <title>Hello World</title>
-    <style>
-        #results {
-            margin-top: 20px;
-        }
-        .result {
-            margin-bottom: 20px;
-        }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boekgegevens: 1984</title>
 </head>
 <body>
-    <h1>Hello World</h1>
-    <input type="text" id="searchInput" placeholder="Zoek in de OBA collectie">
-    <button onclick="search()">Zoeken</button>
-    <div id="results"></div>
-    <script>
-     async function search() {
-  const searchInput = document.getElementById("searchInput");
-  const query = searchInput.value;
-  const resultsContainer = document.getElementById("results");
-  resultsContainer.innerHTML = "";
-
-  const apiKey = "76f45dfa187d66be5fd6af05573eab04";
-  const corsProxy = "https://cors-anywhere.herokuapp.com/";
-  const url = `${corsProxy}https://zoeken.oba.nl/api/v1/search/?q=${encodeURIComponent(
-    query
-  )}&authorization=${apiKey}&detail=short&output=json`;
-
-  try {
-    const response = await fetch(url);
-    const data = await response.json();
-    console.log("API response data: ", data);
-
-    if (
-      data.aquabrowser &&
-      data.aquabrowser.results &&
-      data.aquabrowser.results.result
-    ) {
-      const results = Array.isArray(data.aquabrowser.results.result)
-        ? data.aquabrowser.results.result
-        : [data.aquabrowser.results.result];
-      console.log("Results array: ", results);
-
-      results.forEach((result) => {
-        const title = result.titles["short-title"]["_text"];
-        const ppn = result.identifiers["ppn-id"]["_text"];
-        const isbn = result.identifiers["isbn-id"]
-          ? result.identifiers["isbn-id"]["_text"]
-          : "";
-
-        const coverUrl = `https://cover.biblion.nl/coverlist.dll/?doctype=morebutton&bibliotheek=oba&style=0&ppn=${ppn}&isbn=${isbn}&lid=&aut=&ti=&size=120`;
-
-        const resultDiv = document.createElement("div");
-        resultDiv.classList.add("result");
-        resultDiv.innerHTML = `<h3>${title}</h3><img src="${coverUrl}" alt="${title}">`;
-
-        resultsContainer.appendChild(resultDiv);
-      });
-    } else {
-      resultsContainer.innerHTML = "<p>Geen resultaten gevonden.</p>";
-    }
-  } catch (error) {
-    console.error("Error during API fetch: ", error);
-    resultsContainer.innerHTML = "<p>Er is een fout opgetreden bij het ophalen van de resultaten.</p>";
-  }
-}
-
-    </script>
+    <h1 id="titel"></h1>
+    <a id="link" target="_blank"><img id="plaatje" src="" alt=""></a>
+    <script src="script.js"></script>
 </body>
 </html>
