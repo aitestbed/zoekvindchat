@@ -16,16 +16,15 @@ async function getResults(searchTerm) {
             const resultItem = document.createElement("div");
             resultItem.className = "result-item";
 
+            const plaatjeLink = document.createElement("a");
+            plaatjeLink.href = result.detaillink;
+
             const plaatje = document.createElement("img");
             plaatje.src = result.coverimages[0];
             plaatje.alt = result.titles[0];
-            resultItem.appendChild(plaatje);
 
-            const titleLink = document.createElement("a");
-            titleLink.href = result.detaillink;
-            titleLink.innerText = result.titles[0];
-            titleLink.style.display = "block";
-            resultItem.appendChild(titleLink);
+            plaatjeLink.appendChild(plaatje);
+            resultItem.appendChild(plaatjeLink);
 
             resultsContainer.appendChild(resultItem);
         });
