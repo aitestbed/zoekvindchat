@@ -3,11 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JSON Output</title>
+    <title>Book Covers</title>
+    <style>
+        .book {
+            display: inline-block;
+            margin: 10px;
+            text-align: center;
+        }
+        .book img {
+            max-width: 200px;
+            max-height: 300px;
+        }
+    </style>
 </head>
 <body>
-    <h1>JSON Output:</h1>
-    <pre id="jsonOutput"></pre>
+    <h1>Book Covers:</h1>
+    <div id="bookContainer"></div>
 
     <script src="script.js"></script>
 </body>
