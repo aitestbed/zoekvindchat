@@ -1,6 +1,7 @@
 const api_url_base = "https://cors-anywhere.herokuapp.com/https://zoeken.oba.nl/api/v1/search/?q=";
 const api_key = "authorization=76f45dfa187d66be5fd6af05573eab04";
 const api_output = "&output=json";
+const oba_base_url = "https://zoeken.oba.nl";
 
 async function getResults(searchTerm) {
     const api_url = api_url_base + searchTerm + "&" + api_key + api_output;
@@ -17,7 +18,7 @@ async function getResults(searchTerm) {
             resultItem.className = "result-item";
 
             const plaatjeLink = document.createElement("a");
-            plaatjeLink.href = result.detaillink;
+            plaatjeLink.href = oba_base_url + result.detaillink;
 
             const plaatje = document.createElement("img");
             plaatje.src = result.coverimages[0];
