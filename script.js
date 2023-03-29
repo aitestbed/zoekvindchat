@@ -18,7 +18,9 @@ async function getResults(searchTerm) {
             resultItem.className = "result-item";
 
             const plaatjeLink = document.createElement("a");
-            plaatjeLink.href = oba_base_url + result.detaillink;
+            if (result.detailLink) {
+                plaatjeLink.href = result.detailLink.replace("http://", "https://");
+            }
 
             const plaatje = document.createElement("img");
             plaatje.src = result.coverimages[0];
