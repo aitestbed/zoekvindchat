@@ -13,7 +13,7 @@ async function getBooks() {
             bookDiv.className = "book";
 
             const coverImg = document.createElement("img");
-            coverImg.src = book.coverimages[0].coverimage;
+            coverImg.src = book.coverimages.coverimage;
             coverImg.alt = book.titles[0].title;
 
             const detailLink = document.createElement("a");
