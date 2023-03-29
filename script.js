@@ -1,32 +1,23 @@
 const api_url = "https://cors-anywhere.herokuapp.com/https://zoeken.oba.nl/api/v1/search/?q=1984&authorization=76f45dfa187d66be5fd6af05573eab04&output=json";
 
-async function getBooks() {
+async function getPlaatjes() {
     try {
         const response = await fetch(api_url);
         const data = await response.json();
-        const books = data.results;
+        const results = data.results;
 
-        const bookContainer = document.getElementById("bookContainer");
+        const plaatjesContainer = document.getElementById("plaatjesContainer");
 
-        books.forEach(book => {
-            const bookDiv = document.createElement("div");
-            bookDiv.className = "book";
-
-            const coverImg = document.createElement("img");
-            coverImg.src = book.coverimages.coverimage;
-            coverImg.alt = book.titles[0].title;
-
-            const detailLink = document.createElement("a");
-            detailLink.href = book.detaillink;
-            detailLink.target = "_blank";
-
-            detailLink.appendChild(coverImg);
-            bookDiv.appendChild(detailLink);
-            bookContainer.appendChild(bookDiv);
+        results.forEach(result => {
+            const plaatje = document.createElement("img");
+            plaatje.src = result.coverimages[0].coverimage;
+            plaatje.alt = result.titles[0].title;
+            plaatje.style.margin = "10px";
+            plaatjesContainer.appendChild(plaatje);
         });
     } catch (error) {
         console.error("Error fetching data:", error);
     }
 }
 
-getBooks();
+getPlaatjes();
