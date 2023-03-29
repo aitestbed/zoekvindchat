@@ -13,17 +13,21 @@ async function getResults(searchTerm) {
         resultsContainer.innerHTML = ""; // Clear previous results
 
         results.forEach(result => {
+            const resultItem = document.createElement("div");
+            resultItem.className = "result-item";
+
             const plaatje = document.createElement("img");
             plaatje.src = result.coverimages[0];
             plaatje.alt = result.titles[0];
-            plaatje.style.margin = "10px";
-            resultsContainer.appendChild(plaatje);
+            resultItem.appendChild(plaatje);
 
             const titleLink = document.createElement("a");
             titleLink.href = result.detaillink;
             titleLink.innerText = result.titles[0];
             titleLink.style.display = "block";
-            resultsContainer.appendChild(titleLink);
+            resultItem.appendChild(titleLink);
+
+            resultsContainer.appendChild(resultItem);
         });
     } catch (error) {
         console.error("Error fetching data:", error);
