@@ -20,4 +20,4 @@ async function getPlaatjes() {
     }
 }
 
-getPlaatjes();
+document.addEventListener("DOMContentLoaded", getPlaatjes);
