@@ -1,5 +1,5 @@
 const api_url = "https://zoeken.oba.nl/api/v1/search/?q=1984&authorization=76f45dfa187d66be5fd6af05573eab04&output=json";
-const cors_proxy_url = "https://cors-anywhere.herokuapp.com/";
+const cors_proxy_url = "http://localhost:8080/";
 
 async function getBookData() {
     try {
