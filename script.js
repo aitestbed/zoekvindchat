@@ -63,13 +63,12 @@ async function search() {
     container.style.display = "none";
   });
 
-  const categories = [
-    { name: "boeken", facet: "&facet=type(book)" },
-    { name: "dvds", facet: "&facet=type(movie)" },
-    { name: "activiteiten", facet: "&facet=table:Activiteiten" },
-    { name: "cursussen", facet: "&facet=table:jsonsrc" },
-  ];
-
+ const categories = [
+    { name: "boeken", facet: "&facet=type(book)&refine=true" },
+    { name: "dvds", facet: "&facet=type(movie)&refine=true" },
+    { name: "activiteiten", facet: "&facet=table:Activiteiten&refine=true" },
+    { name: "cursussen", facet: "&facet=table:jsonsrc&refine=true" },
+];
   for (const category of categories) {
     const results = await getResults(searchTerm, category.facet);
     if (results.length > 0) {
