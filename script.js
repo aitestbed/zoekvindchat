@@ -34,8 +34,13 @@ function showResults(category, results) {
     img.src = result.coverimages[0];
     img.alt = result.titles[0];
 
+    let detailLink = result.detailLink;
+    if (!detailLink) {
+      detailLink = result.detaillink;
+    }
+
     const link = document.createElement("a");
-    link.href = result.detaillink.replace("http:", "https:");
+    link.href = detailLink.replace("http:", "https:");
     link.target = "_blank";
     link.appendChild(img);
 
@@ -75,6 +80,7 @@ async function search() {
     }
   }
 }
+
 
 document.getElementById("searchForm").addEventListener("submit", (event) => {
   event.preventDefault();
