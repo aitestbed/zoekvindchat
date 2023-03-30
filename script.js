@@ -31,8 +31,12 @@ function showResults(category, results) {
 
   results.forEach((result) => {
     const img = document.createElement("img");
-    img.src = result.coverimages[0];
+    img.src = result.coverimages[0] || "fallback.JPG";
     img.alt = result.titles[0];
+    img.onerror = function () {
+      this.onerror = null;
+      this.src = "fallback.JPG";
+    };
 
     let detailLink = result.detailLink;
     if (!detailLink) {
@@ -47,10 +51,6 @@ function showResults(category, results) {
     const item = document.createElement("div");
     item.className = "result-item";
     item.appendChild(link);
-
-    img.onerror = function() {
-      this.src = 'fallback.JPG';
-    }
 
     resultsContainer.appendChild(item);
   });
