@@ -31,8 +31,13 @@ function showResults(category, results) {
 
   results.forEach((result) => {
     const img = document.createElement("img");
-    img.src = result.coverimages[0];
-    img.alt = result.titles[0];
+    if (result.coverimages.length > 0) {
+      img.src = result.coverimages[0];
+      img.alt = result.titles[0];
+    } else {
+      img.src = "fallback.jpg";
+      img.alt = "No image available";
+    }
 
     let detailLink = result.detailLink;
     if (!detailLink) {
@@ -51,6 +56,7 @@ function showResults(category, results) {
     resultsContainer.appendChild(item);
   });
 }
+
 
 async function search() {
   const searchTerm = document.getElementById("searchTerm").value.trim();
