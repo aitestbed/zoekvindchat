@@ -31,13 +31,8 @@ function showResults(category, results) {
 
   results.forEach((result) => {
     const img = document.createElement("img");
-    if (result.coverimages.length > 0) {
-      img.src = result.coverimages[0];
-      img.alt = result.titles[0];
-    } else {
-      img.src = "fallback.JPG";
-      img.alt = "No image available";
-    }
+    img.src = result.coverimages[0];
+    img.alt = result.titles[0];
 
     let detailLink = result.detailLink;
     if (!detailLink) {
@@ -53,10 +48,13 @@ function showResults(category, results) {
     item.className = "result-item";
     item.appendChild(link);
 
+    img.onerror = function() {
+      this.src = 'path/to/fallback.jpg';
+    }
+
     resultsContainer.appendChild(item);
   });
 }
-
 
 async function search() {
   const searchTerm = document.getElementById("searchTerm").value.trim();
