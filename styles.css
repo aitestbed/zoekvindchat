@@ -2,12 +2,41 @@ body {
   font-family: Arial, sans-serif;
 }
 
-.results-container {
+.categories {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
+  margin-top: 20px;
+}
+
+.category-container {
+  flex-basis: 23%;
+  margin-bottom: 20px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.category-container h2 {
+  margin-top: 0;
+}
+
+.results-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
 }
 
 .result-item {
   margin: 10px;
+  max-width: 200px;
+  max-height: 300px;
+  overflow: hidden;
+}
+
+.result-item img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
 }
