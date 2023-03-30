@@ -4,9 +4,9 @@ body {
 
 .categories {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
+  flex-direction: column;
   margin-top: 20px;
+}
 }
 
 .category-container {
