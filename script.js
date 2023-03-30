@@ -1,5 +1,9 @@
+const api_url_base = "https://cors-anywhere.herokuapp.com/https://zoeken.oba.nl/api/v1/search/?q=";
+const api_key = "76f45dfa187d66be5fd6af05573eab04";
+const api_output = "&output=json";
+
 async function getResults(searchTerm, facet = "") {
-  const api_url = api_url_base + searchTerm + facet + "&" + api_key + api_output;
+  const api_url = api_url_base + searchTerm + facet + api_output + "&authorization=" + api_key;
 
   try {
     const response = await fetch(api_url, {
@@ -21,8 +25,31 @@ async function getResults(searchTerm, facet = "") {
   }
 }
 
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
+function showResults(category, results) {
+  const resultsContainer = document.getElementById(category + "Results");
+  resultsContainer.innerHTML = "";
+
+  results.forEach((result) => {
+    const img = document.createElement("img");
+    img.src = result.coverimages[0];
+    img.alt = result.titles[0];
+
+    let detailLink = result.detailLink;
+    if (!detailLink) {
+      detailLink = result.detaillink;
+    }
+
+    const link = document.createElement("a");
+    link.href = detailLink.replace("http:", "https:");
+    link.target = "_blank";
+    link.appendChild(img);
+
+    const item = document.createElement("div");
+    item.className = "result-item";
+    item.appendChild(link);
+
+    resultsContainer.appendChild(item);
+  });
 }
 
 async function search() {
@@ -39,8 +66,8 @@ async function search() {
   const categories = [
     { name: "boeken", facet: "&facet=type(book)" },
     { name: "dvds", facet: "&facet=type(movie)" },
-    { name: "activiteiten", facet: "%20table:Activiteiten" },
-    { name: "cursussen", facet: "%20table:jsonsrc" },
+    { name: "activiteiten", facet: "&facet=table:Activiteiten" },
+    { name: "cursussen", facet: "&facet=table:jsonsrc" },
   ];
 
   for (const category of categories) {
@@ -51,8 +78,16 @@ async function search() {
     } else {
       document.getElementById(category.name + "Container").style.display = "none";
     }
-
-    // Voeg een time-out van 500ms toe
-    await sleep(500);
   }
 }
+
+
+document.getElementById("searchForm").addEventListener("submit", (event) => {
+  event.preventDefault();
+  search();
+});
+
+const categoryContainers = document.querySelectorAll(".category-container");
+categoryContainers.forEach((container) => {
+  container.style.display = "none";
+});
