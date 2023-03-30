@@ -35,7 +35,7 @@ function showResults(category, results) {
       img.src = result.coverimages[0];
       img.alt = result.titles[0];
     } else {
-      img.src = "fallback.jpg";
+      img.src = "fallback.JPG";
       img.alt = "No image available";
     }
 
