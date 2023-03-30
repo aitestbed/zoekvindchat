@@ -1,7 +1,5 @@
 const api_url_base = "https://cors-anywhere.herokuapp.com/https://zoeken.oba.nl/api/v1/search/?q=";
 const api_key = "authorization=76f45dfa187d66be5fd6af05573eab04";
-const apiconst api_url_base = "https://cors-anywhere.herokuapp.com/https://zoeken.oba.nl/api/v1/search/?q=";
-const api_key = "authorization=76f45dfa187d66be5fd6af05573eab04";
 const api_output = "&output=json";
 
 async function getResults(searchTerm, facet = "") {
