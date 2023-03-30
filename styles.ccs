@@ -1,0 +1,9 @@
+.results-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.result-item {
+  margin: 10px;
+}
