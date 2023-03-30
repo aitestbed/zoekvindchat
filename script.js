@@ -3,7 +3,7 @@ const api_key = "&authorization=76f45dfa187d66be5fd6af05573eab04";
 const api_output = "&output=json";
 
 async function getResults(searchTerm, facet = "") {
-  const api_url = api_url_base + searchTerm + facet + api_output + api_key;
+  const api_url = api_url_base + searchTerm + facet + api_key + api_output;
 
   try {
     const response = await fetch(api_url, {
