@@ -40,3 +40,19 @@ body {
   max-height: 100%;
   object-fit: contain;
 }
+
+/* Schaal cursus afbeeldingen */
+function scaleCursussen() {
+  const cursussenResults = document.getElementById('cursussenResults');
+  const cursussenImgs = cursussenResults.querySelectorAll('img');
+  cursussenImgs.forEach(img => {
+    img.style.maxWidth = '150px';
+    img.style.maxHeight = '150px';
+  });
+}
+
+.category-container#cursussenContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
