@@ -135,6 +135,10 @@ async function search() {
     return;
   }
 
+  categoryContainers.forEach((container) => {
+    container.style.display = "none";
+  });
+
   const categories = [
     { name: "boeken", facet: "&facet=type(book)" },
     { name: "dvds", facet: "&facet=type(movie)" },
@@ -152,6 +156,7 @@ async function search() {
     }
   }
 }
+
 
 document.getElementById("searchForm").addEventListener("submit", (event) => {
   event.preventDefault();
