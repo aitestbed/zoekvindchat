@@ -63,13 +63,30 @@ function displayResults(results, containerId) {
 }
 
 async function search() {
-  const searchTerm = document.getElementById("searchTerm").value;
+  const searchTerm = document.getElementById("searchTerm").value.trim();
 
-  for (const [facetName, facetValue] of Object.entries(facets)) {
-    const results = await getResults(searchTerm, facetValue);
-    displayResults(results, `${facetName}Results`);
+  if (searchTerm.length === 0) {
+    return;
+  }
+
+  const categories = [
+    { name: "boeken", facet: "&facet=type(book)" },
+    { name: "dvds", facet: "&facet=type(movie)" },
+    { name: "activiteiten", facet: "%20table:Activiteiten" },
+    { name: "cursussen", facet: "%20table:jsonsrc" },
+  ];
+
+  for (const category of categories) {
+    const results = await getResults(searchTerm, category.facet);
+    if (results.length > 0) {
+      showResults(category.name, results);
+      document.getElementById(category.name + "Results").parentElement.style.display = "block";
+    } else {
+      document.getElementById(category.name + "Results").parentElement.style.display = "none";
+    }
   }
 }
+
 
 document.addEventListener("DOMContentLoaded", () => {
   search();
