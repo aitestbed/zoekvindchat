@@ -13,14 +13,25 @@ async function getResults(searchTerm, facet = "") {
   const api_url = api_url_base + searchTerm + facet + "&" + api_key + api_output;
 
   try {
-    const response = await fetch(api_url);
-    const data = await response.json();
-    return data.results;
+    const response = await fetch(api_url, {
+      headers: {
+        "X-Requested-With": "XMLHttpRequest",
+      },
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      return data.results;
+    } else {
+      console.error("Error fetching data:", response.status, response.statusText);
+      return [];
+    }
   } catch (error) {
     console.error("Error fetching data:", error);
     return [];
   }
 }
+
 
 function displayResults(results, containerId) {
   const resultsContainer = document.getElementById(containerId);
