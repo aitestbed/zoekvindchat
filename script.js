@@ -66,8 +66,8 @@ async function search() {
  const categories = [
     { name: "boeken", facet: "&facet=type(book)&refine=true" },
     { name: "dvds", facet: "&facet=type(movie)&refine=true" },
-    { name: "activiteiten", facet: "&facet=table:Activiteiten&refine=true" },
-    { name: "cursussen", facet: "&facet=table:jsonsrc&refine=true" },
+    { name: "activiteiten", facet: "%20facet=table:Activiteiten&refine=true" },
+    { name: "cursussen", facet: "%20facet=table:jsonsrc&refine=true" },
 ];
   for (const category of categories) {
     const results = await getResults(searchTerm, category.facet);
