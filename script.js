@@ -49,7 +49,7 @@ function showResults(category, results) {
     item.appendChild(link);
 
     img.onerror = function() {
-      this.src = 'path/to/fallback.jpg';
+      this.src = 'fallback.JPG';
     }
 
     resultsContainer.appendChild(item);
