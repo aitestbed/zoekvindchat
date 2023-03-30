@@ -1,20 +1,5 @@
-async function getResults(searchTerm, category) {
-  const api_url_base = "https://cors-anywhere.herokuapp.com/https://zoeken.oba.nl/api/v1/search/?q=";
-  const api_key = "authorization=76f45dfa187d66be5fd6af05573eab04";
-  const api_output = "&output=json";
-  let api_facet = "";
-
-  if (category === "boeken") {
-    api_facet = "&facet=Type(book)";
-  } else if (category === "dvds") {
-    api_facet = "&facet=Type(movie)";
-  } else if (category === "activiteiten") {
-    api_facet = "%20table:Activiteiten";
-  } else if (category === "cursussen") {
-    api_facet = "%20table:jsonsrc";
-  }
-
-  const api_url = api_url_base + searchTerm + api_facet + "&" + api_key + api_output;
+async function getResults(searchTerm, facet = "") {
+  const api_url = api_url_base + searchTerm + facet + "&" + api_key + api_output;
 
   try {
     const response = await fetch(api_url, {
@@ -36,6 +21,10 @@ async function getResults(searchTerm, category) {
   }
 }
 
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 async function search() {
   const searchTerm = document.getElementById("searchTerm").value.trim();
 
@@ -43,58 +32,27 @@ async function search() {
     return;
   }
 
+  categoryContainers.forEach((container) => {
+    container.style.display = "none";
+  });
+
   const categories = [
-    { name: "boeken", container: "boekenContainer" },
-    { name: "dvds", container: "dvdsContainer" },
-    { name: "activiteiten", container: "activiteitenContainer" },
-    { name: "cursussen", container: "cursussenContainer" },
+    { name: "boeken", facet: "&facet=type(book)" },
+    { name: "dvds", facet: "&facet=type(movie)" },
+    { name: "activiteiten", facet: "%20table:Activiteiten" },
+    { name: "cursussen", facet: "%20table:jsonsrc" },
   ];
 
   for (const category of categories) {
-    const results = await getResults(searchTerm, category.name);
-
+    const results = await getResults(searchTerm, category.facet);
     if (results.length > 0) {
-      showResults(category.container, results);
-      document.getElementById(category.container).style.display = "block";
+      showResults(category.name, results);
+      document.getElementById(category.name + "Container").style.display = "block";
     } else {
-      document.getElementById(category.container).style.display = "none";
+      document.getElementById(category.name + "Container").style.display = "none";
     }
+
+    // Voeg een time-out van 500ms toe
+    await sleep(500);
   }
-}
-
-document.getElementById("searchForm").addEventListener("submit", (event) => {
-  event.preventDefault();
-  search();
-});
-
-const categoryContainers = document.querySelectorAll(".category-container");
-categoryContainers.forEach((container) => {
-  container.style.display = "none";
-});
-
-function showResults(containerId, results) {
-  const resultsContainer = document.getElementById(containerId).querySelector(".results-container");
-  resultsContainer.innerHTML = "";
-
-  results.forEach((result) => {
-    const img = document.createElement("img");
-    img.src = result.coverimages[0];
-    img.alt = result.titles[0];
-
-    let detailLink = result.detailLink;
-    if (!detailLink) {
-      detailLink = result.detaillink;
-    }
-
-    const link = document.createElement("a");
-    link.href = detailLink.replace("http:", "https:");
-    link.target = "_blank";
-    link.appendChild(img);
-
-    const item = document.createElement("div");
-    item.className = "result-item";
-    item.appendChild(link);
-
-    resultsContainer.appendChild(item);
-  });
 }
